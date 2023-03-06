@@ -37,7 +37,7 @@ const ConcurrencyController = function (maxConcurrency) {
         queue.push(runTask.bind(null, fn, args, resolve));
 
         (async () => {
-            // 该微任务是用来等待，所有宏任务（setTimeout）进入队列后， 再开始执行
+            // 该微任务是用来等待，所有同步任务（fn）进入队列后， 再开始执行
             await Promise.resolve();
             // 3. 当前满足条件，可以先执行任务
             if (runningCount < maxConcurrency && queue.length > 0) {
