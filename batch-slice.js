@@ -1,5 +1,6 @@
 
 // 以下是分批执行例子，并不是并发执行。
+// 分批切片处理的话，当前片如果存在较长的时间处理时，那么就不会进行下一步的处理。
 (async function () {
 
     const asyncFn = (v, d) => {
@@ -23,6 +24,7 @@
 
     const limit = 2;
     let len = 0;
+    const start = Date.now();
     while (len < asyncArr.length) {
         const runArr = asyncArr.slice(len, len + limit);
         const res = await Promise.all(
@@ -35,5 +37,6 @@
         console.log('res: ', res);
         len += limit;
     }
+    console.log('finish: ', Date.now() - start, 'ms');
 
 })();

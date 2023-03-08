@@ -87,17 +87,28 @@ const cc = ConcurrencyController(2);
             }, d * 1e3);
         })
     };
+    // const asyncArr = [
+    //     cc(() => asyncFn('a_3', 3)),
+    //     cc(() => asyncFn('a_2', 2)),
+    //     cc(() => asyncFn('b_1', 1)),
+    //     cc(() => asyncFn('b_2', 2)),
+    //     cc(() => asyncFn('c_2', 2)),
+    //     cc(() => asyncFn('c_2', 3)),
+    //     cc(() => asyncFn('d_3', 1)),
+    // ];
+    const start = Date.now();
     const asyncArr = [
-        cc(() => asyncFn('a_3', 3)),
-        cc(() => asyncFn('a_2', 2)),
-        cc(() => asyncFn('b_1', 1)),
-        cc(() => asyncFn('b_2', 2)),
-        cc(() => asyncFn('c_2', 2)),
-        cc(() => asyncFn('c_2', 3)),
-        cc(() => asyncFn('d_3', 1)),
+        cc(() => asyncFn('aaa', 2)),
+        cc(() => asyncFn('aaa', 3)),
+        cc(() => asyncFn('aaa', 1)),
+        cc(() => asyncFn('bbb', 2)),
+        cc(() => asyncFn('bbb', 3)),
+        cc(() => asyncFn('ccc', 1)),
+        cc(() => asyncFn('ccc', 2)),
     ];
 
     const res = await Promise.all(asyncArr);
+    console.log('finish: ', Date.now() - start, 'ms');
 
-    console.log('res: ', res);
+    // console.log('res: ', res);
 })();
