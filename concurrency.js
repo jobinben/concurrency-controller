@@ -3,8 +3,8 @@
 // 方法1: 函数式实现
 const ConcurrencyController = function (maxConcurrency) {
 
-    let runningCount = 0;
-    let queue = [];
+    let runningCount = 0; // 当前运行数
+    let queue = []; // 任务队列
 
     // 5. 执行下一个任务
     const nextTask = () => {
@@ -37,7 +37,7 @@ const ConcurrencyController = function (maxConcurrency) {
         queue.push(runTask.bind(null, fn, args, resolve));
 
         (async () => {
-            // 该微任务是用来等待，所有同步任务（fn）进入队列后， 再开始执行
+            // 该微任务是用来等待，所有任务（fn）进入队列后， 再开始执行
             await Promise.resolve();
             // 3. 当前满足条件，可以先执行任务
             if (runningCount < maxConcurrency && queue.length > 0) {
@@ -49,7 +49,7 @@ const ConcurrencyController = function (maxConcurrency) {
     }
 
 
-    // 1. 重新返回一个Promise
+    // 1. 收集任务并返回一个Promise
     const generator = function (fn, ...args) {
         return new Promise((resolve) => {
             enqueue(fn, args, resolve);
@@ -81,34 +81,34 @@ const cc = ConcurrencyController(2);
 (async () => {
     const asyncFn = (v, d) => {
         return new Promise(resolve => {
-            console.log('message: ', v, 'running: ', cc.runningCount, 'queue size: ', cc.queueSize);
+            console.log('message: ', v);
             setTimeout(() => {
                 resolve(v);
             }, d * 1e3);
         })
     };
-    // const asyncArr = [
-    //     cc(() => asyncFn('a_3', 3)),
-    //     cc(() => asyncFn('a_2', 2)),
-    //     cc(() => asyncFn('b_1', 1)),
-    //     cc(() => asyncFn('b_2', 2)),
-    //     cc(() => asyncFn('c_2', 2)),
-    //     cc(() => asyncFn('c_2', 3)),
-    //     cc(() => asyncFn('d_3', 1)),
-    // ];
-    const start = Date.now();
     const asyncArr = [
-        cc(() => asyncFn('aaa', 2)),
-        cc(() => asyncFn('aaa', 3)),
-        cc(() => asyncFn('aaa', 1)),
-        cc(() => asyncFn('bbb', 2)),
-        cc(() => asyncFn('bbb', 3)),
-        cc(() => asyncFn('ccc', 1)),
-        cc(() => asyncFn('ccc', 2)),
+        cc(() => asyncFn('a_3', 3)),
+        cc(() => asyncFn('a_2', 2)),
+        cc(() => asyncFn('b_1', 1)),
+        cc(() => asyncFn('b_2', 2)),
+        cc(() => asyncFn('c_2', 2)),
+        cc(() => asyncFn('c_2', 3)),
+        cc(() => asyncFn('d_3', 1)),
     ];
+    // const start = Date.now();
+    // const asyncArr = [
+    //     cc(() => asyncFn('a_2', 2)),
+    //     cc(() => asyncFn('a_3', 3)),
+    //     cc(() => asyncFn('a_1', 1)),
+    //     cc(() => asyncFn('b_4', 2)),
+    //     cc(() => asyncFn('b_3', 3)),
+    //     cc(() => asyncFn('c_1', 1)),
+    //     cc(() => asyncFn('c_2', 2)),
+    // ];
 
     const res = await Promise.all(asyncArr);
-    console.log('finish: ', Date.now() - start, 'ms');
+    // console.log('并发控制 finish: ', Date.now() - start, 'ms');
 
-    // console.log('res: ', res);
+    console.log('res: ', res);
 })();

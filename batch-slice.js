@@ -13,13 +13,13 @@
     };
 
     const asyncArr = [
-        () => asyncFn('aaa', 2),
-        () => asyncFn('aaa', 3),
-        () => asyncFn('aaa', 1),
-        () => asyncFn('bbb', 2),
-        () => asyncFn('bbb', 3),
-        () => asyncFn('ccc', 1),
-        () => asyncFn('ccc', 2),
+        () => asyncFn('a_2', 2),
+        () => asyncFn('a_3', 3),
+        () => asyncFn('a_1', 1),
+        () => asyncFn('b_4', 2),
+        () => asyncFn('b_3', 3),
+        () => asyncFn('c_1', 1),
+        () => asyncFn('c_2', 2),
     ];
 
     const limit = 2;
@@ -37,6 +37,6 @@
         console.log('res: ', res);
         len += limit;
     }
-    console.log('finish: ', Date.now() - start, 'ms');
+    console.log('切片控制 finish: ', Date.now() - start, 'ms');
 
 })();
