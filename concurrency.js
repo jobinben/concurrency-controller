@@ -81,7 +81,7 @@ const cc = ConcurrencyController(2);
 (async () => {
     const asyncFn = (v, d) => {
         return new Promise(resolve => {
-            console.log('message: ', v);
+            console.log('message: ', v, 'running: ', cc.runningCount, 'queue size: ', cc.queueSize);
             setTimeout(() => {
                 resolve(v);
             }, d * 1e3);
